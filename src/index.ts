@@ -13,6 +13,7 @@ app.post('/minify', (req, res) => {
     const jsCode = req.body;
     if(!jsCode || typeof jsCode !== 'string') {
         res.status(400).send("Invalid or missing JS Code");
+        return
     }
 
     const result = UglifyJS.minify(jsCode);
@@ -20,6 +21,7 @@ app.post('/minify', (req, res) => {
     if(result.error){
         Logger.log(result.error);
         res.status(500).send(result.error.message);
+        return
     }
 
     res.type('text/javascript').send(result.code);
